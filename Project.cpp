@@ -28,7 +28,7 @@ int main(void)
 
     Initialize();
 
-    while(exitFlag == false)  
+    while((*GameMechsp).getExitFlagStatus() == false)  
     {
         GetInput();
         RunLogic();
@@ -49,7 +49,7 @@ void Initialize(void)
     MacUILib_init();
     MacUILib_clearScreen();
 
-    exitFlag = false;
+    GameMechsp = new GameMechs(15, 30);
 }
 
 void GetInput(void)
@@ -114,7 +114,8 @@ void LoopDelay(void)
 
 void CleanUp(void)
 {
-    MacUILib_clearScreen();    
+    MacUILib_clearScreen();  
+    delete GameMechsp;  
   
     MacUILib_uninit();
 }
