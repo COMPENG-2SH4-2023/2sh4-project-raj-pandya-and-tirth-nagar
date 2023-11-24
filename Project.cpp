@@ -6,6 +6,8 @@
 using namespace std;
 
 #define DELAY_CONST 100000
+#define B_WIDTH 36
+#define B_HEIGHT 18
 
 bool exitFlag;
 
@@ -56,7 +58,22 @@ void RunLogic(void)
 
 void DrawScreen(void)
 {
-    MacUILib_clearScreen();    
+    MacUILib_clearScreen();
+
+    for (int i = 0; i < B_HEIGHT; i++)
+    {
+        for (int j = 0; j < B_WIDTH; j++)
+        {
+            if(i == 0 || i == B_HEIGHT - 1 || j == 0 || j == B_WIDTH - 1){
+                cout << "#";
+            }
+            else{
+                MacUILib_printf(" ");
+            }
+        }
+        cout << "\n";
+    }
+    
 
 }
 
