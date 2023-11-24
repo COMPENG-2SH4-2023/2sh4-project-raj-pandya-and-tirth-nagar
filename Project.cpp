@@ -1,13 +1,13 @@
 #include <iostream>
 #include "MacUILib.h"
 #include "objPos.h"
+#include "player.h"
+#include "GameMechs.h"
 
 
 using namespace std;
 
 #define DELAY_CONST 100000
-#define B_WIDTH 36
-#define B_HEIGHT 18
 
 bool exitFlag;
 
@@ -18,6 +18,9 @@ void DrawScreen(void);
 void LoopDelay(void);
 void CleanUp(void);
 
+GameMechs* GameMechsp;
+
+Player* player;
 
 
 int main(void)
@@ -40,6 +43,9 @@ int main(void)
 
 void Initialize(void)
 {
+    GameMechsp = new GameMechs(15, 30);
+    player = new Player(GameMechsp);
+
     MacUILib_init();
     MacUILib_clearScreen();
 
@@ -48,24 +54,47 @@ void Initialize(void)
 
 void GetInput(void)
 {
-   
+   char input;
+   if (MacUILib_hasChar() != 0){
+	input =  MacUILib_getChar();	
+   }
+   GameMechsp->setInput(input);
 }
 
 void RunLogic(void)
 {
+    char input = GameMechsp->getInput();
     
+    if(input != 0)  
+    {
+        switch(input)
+        {                      
+            case 27:  // exit
+                GameMechsp->setExitTrue(); 
+                break;
+            default:
+                break;
+        }
+        GameMechsp->setInput(0);
+    }
 }
 
 void DrawScreen(void)
 {
     MacUILib_clearScreen();
 
-    for (int i = 0; i < B_HEIGHT; i++)
+    objPos pos;
+    player->getPlayerPos(pos);
+
+    for (int i = 0; i < GameMechsp->getBoardSizeX(); i++)
     {
-        for (int j = 0; j < B_WIDTH; j++)
+        for (int j = 0; j < GameMechsp->getBoardSizeY(); j++)
         {
-            if(i == 0 || i == B_HEIGHT - 1 || j == 0 || j == B_WIDTH - 1){
-                cout << "#";
+            if(i == 0 || i == GameMechsp->getBoardSizeX() - 1 || j == 0 || j == GameMechsp->getBoardSizeY() - 1){
+                MacUILib_printf("#");
+            }
+            else if(i == pos.x && j == pos.y){
+                MacUILib_printf("*");
             }
             else{
                 MacUILib_printf(" ");
