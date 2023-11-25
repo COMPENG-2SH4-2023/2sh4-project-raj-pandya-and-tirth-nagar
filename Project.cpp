@@ -48,8 +48,6 @@ void Initialize(void)
 
     MacUILib_init();
     MacUILib_clearScreen();
-
-    GameMechsp = new GameMechs(15, 30);
 }
 
 void GetInput(void)
@@ -57,8 +55,8 @@ void GetInput(void)
    char input;
    if (MacUILib_hasChar() != 0){
 	input =  MacUILib_getChar();	
+    GameMechsp->setInput(input);
    }
-   GameMechsp->setInput(input);
 }
 
 void RunLogic(void)
@@ -68,15 +66,31 @@ void RunLogic(void)
     if(input != 0)  
     {
         switch(input)
-        {                      
-            case 27:  // exit
-                GameMechsp->setExitTrue(); 
+        {
+            case 27:
+                GameMechsp->setExitTrue();
                 break;
-            default:
+            case 'w':
+            case 'W':
+                GameMechsp->setInput('w');
+                break;
+            case 'a':
+            case 'A':
+                GameMechsp->setInput('a');
+                break;
+            case 's':
+            case 'S':
+                GameMechsp->setInput('s');
+                break;
+            case 'd':
+            case 'D':
+                GameMechsp->setInput('d');
                 break;
         }
-        GameMechsp->setInput(0);
+        
     }
+    player->updatePlayerDir();
+    player->movePlayer();
 }
 
 void DrawScreen(void)
@@ -102,7 +116,7 @@ void DrawScreen(void)
         }
         cout << "\n";
     }
-    
+    MacUILib_printf("X: %d Y: %d\n", pos.x, pos.y);
 
 }
 

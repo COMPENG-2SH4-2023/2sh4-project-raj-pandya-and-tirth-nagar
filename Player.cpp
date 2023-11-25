@@ -1,5 +1,5 @@
 #include "Player.h"
-
+#include "objPos.h"
 
 Player::Player(GameMechs* thisGMRef)
 {
@@ -64,6 +64,7 @@ void Player::updatePlayerDir()
 void Player::movePlayer()
 {
     // PPA3 Finite State Machine logic
+
     if (myDir != STOP){
         switch (myDir)
         {
