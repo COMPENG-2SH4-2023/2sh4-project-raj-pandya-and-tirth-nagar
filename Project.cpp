@@ -116,8 +116,6 @@ void DrawScreen(void)
         }
         cout << "\n";
     }
-    MacUILib_printf("X: %d Y: %d\n", pos.x, pos.y);
-
 }
 
 void LoopDelay(void)
