@@ -1,15 +1,14 @@
 #include <iostream>
-#include "MacUILib.h"
 #include "objPos.h"
 #include "player.h"
 #include "GameMechs.h"
+#include "MacUILib.h"
+
 
 
 using namespace std;
 
 #define DELAY_CONST 100000
-
-bool exitFlag;
 
 void Initialize(void);
 void GetInput(void);
@@ -19,7 +18,6 @@ void LoopDelay(void);
 void CleanUp(void);
 
 GameMechs* GameMechsp;
-
 Player* player;
 
 
@@ -55,43 +53,15 @@ void Initialize(void)
 
 void GetInput(void)
 {
-   char input;
-   if (MacUILib_hasChar() != 0){
-	input =  MacUILib_getChar();	
+
+    char input = GameMechsp->getInput();
     GameMechsp->setInput(input);
-   }
+
 }
 
 void RunLogic(void)
 {
-    char input = GameMechsp->getInput();
     
-    if(input != 0)  
-    {
-        switch(input)
-        {
-            case 27:
-                GameMechsp->setExitTrue();
-                break;
-            case 'w':
-            case 'W':
-                GameMechsp->setInput('w');
-                break;
-            case 'a':
-            case 'A':
-                GameMechsp->setInput('a');
-                break;
-            case 's':
-            case 'S':
-                GameMechsp->setInput('s');
-                break;
-            case 'd':
-            case 'D':
-                GameMechsp->setInput('d');
-                break;
-        }
-        
-    }
     player->updatePlayerDir();
     player->movePlayer();
 }
@@ -117,7 +87,7 @@ void DrawScreen(void)
                 MacUILib_printf("*");
             }
             else if (i == food.x && j == food.y){
-                MacUILib_printf("n");
+                MacUILib_printf("%c", food.symbol);
             }
             else{
                 MacUILib_printf(" ");
