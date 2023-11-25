@@ -3,11 +3,12 @@
 #include "objPos.h"
 #include "player.h"
 #include "GameMechs.h"
+#include "objPosArrayList.h"
 
 
 using namespace std;
 
-#define DELAY_CONST 100000
+#define DELAY_CONST 100000*2
 
 bool exitFlag;
 
@@ -100,8 +101,8 @@ void DrawScreen(void)
 {
     MacUILib_clearScreen();
 
-    objPos pos;
-    player->getPlayerPos(pos);
+    objPosArrayList playerPosList;
+    player->getPlayerPosList(playerPosList);
 
     objPos food;
     GameMechsp->getFoodPos(food);
@@ -113,14 +114,32 @@ void DrawScreen(void)
             if(i == 0 || i == GameMechsp->getBoardSizeX() - 1 || j == 0 || j == GameMechsp->getBoardSizeY() - 1){
                 MacUILib_printf("#");
             }
-            else if(i == pos.x && j == pos.y){
-                MacUILib_printf("*");
-            }
             else if (i == food.x && j == food.y){
                 MacUILib_printf("n");
             }
-            else{
-                MacUILib_printf(" ");
+            else
+            {
+                bool printPlayer = false;
+                // Check if the current position is in the player's position list
+                for (int k = 0; k < playerPosList.getSize(); k++)
+                {
+                    objPos pos;
+                    playerPosList.getElement(pos, k);
+                    if (i == pos.x && j == pos.y)
+                    {
+                        printPlayer = true;
+                        break;
+                    }
+                }
+
+                if (printPlayer)
+                {
+                    MacUILib_printf("*");
+                }
+                else
+                {
+                    MacUILib_printf(" ");
+                }
             }
         }
         cout << "\n";
