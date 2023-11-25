@@ -17,7 +17,6 @@ Player::~Player()
 {
     // delete any heap members here
     delete mainGameMechsRef;
-
 }
 
 void Player::getPlayerPos(objPos &returnPos)
@@ -56,9 +55,7 @@ void Player::updatePlayerDir()
                 break;
         }
     }
-
     mainGameMechsRef->clearInput();
-
 }
 
 void Player::movePlayer()
@@ -69,41 +66,40 @@ void Player::movePlayer()
         switch (myDir)
         {
             case UP:
-                if(playerPos.y <= 0){
-                    playerPos.y = mainGameMechsRef->getBoardSizeY() - 2;
-                }
-                else if(playerPos.y >= mainGameMechsRef->getBoardSizeY() - 1){
-                    playerPos.y = 1;
-                }
-                playerPos.y--;
-                break;
-            case DOWN:
-                if(playerPos.y <= 0){
-                    playerPos.y = mainGameMechsRef->getBoardSizeY() - 2;
-                }
-                else if(playerPos.y >= mainGameMechsRef->getBoardSizeY() - 1){
-                    playerPos.y = 1;
-                }
-                playerPos.y++;
-                break;
-            case LEFT:
-                if(playerPos.x <= 0){
-                    playerPos.x = mainGameMechsRef->getBoardSizeX() - 2;
-                }
-                else if(playerPos.x >= mainGameMechsRef->getBoardSizeX() - 1){
-                    playerPos.x = 1;
-                }
                 playerPos.x--;
                 break;
-            case RIGHT:
-                if(playerPos.x <= 0){
-                    playerPos.x = mainGameMechsRef->getBoardSizeX() - 2;
-                }
-                else if(playerPos.x >= mainGameMechsRef->getBoardSizeX() - 1){
-                    playerPos.x = 1;
-                }
+            case DOWN:
                 playerPos.x++;
                 break;
+            case LEFT:
+                playerPos.y--;
+                break;
+            case RIGHT:
+                playerPos.y++;
+                break;
+        }
+
+        int height = mainGameMechsRef->getBoardSizeY();
+        int width = mainGameMechsRef->getBoardSizeX();
+
+        if(playerPos.x <= 0)
+        {
+            playerPos.x = width - 2;
+        }
+
+        else if(playerPos.x >= width-1)
+        {
+            playerPos.x = 1;
+        }
+
+        else if(playerPos.y <= 0)
+        {
+            playerPos.y= height - 2;
+        }
+
+        else if(playerPos.y >= height - 1)
+        {
+            playerPos.y = 1;
         }
     }
 }
