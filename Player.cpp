@@ -50,6 +50,33 @@ void Player::updatePlayerDir()
 {
     // PPA3 input processing logic
     char input = mainGameMechsRef->getInput();
+    
+    if(input != 0)  
+    {
+        switch(input)
+        {
+            case 27:
+                mainGameMechsRef->setExitTrue();
+                break;
+            case 'w':
+            case 'W':
+                mainGameMechsRef->setInput('w');
+                break;
+            case 'a':
+            case 'A':
+                mainGameMechsRef->setInput('a');
+                break;
+            case 's':
+            case 'S':
+                mainGameMechsRef->setInput('s');
+                break;
+            case 'd':
+            case 'D':
+                mainGameMechsRef->setInput('d');
+                break;
+        }
+        
+    }
 
     // Update the direction state
     if(input != 0){

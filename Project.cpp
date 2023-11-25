@@ -8,7 +8,7 @@
 
 using namespace std;
 
-#define DELAY_CONST 100000*2
+#define DELAY_CONST 100000
 
 bool exitFlag;
 
@@ -140,7 +140,8 @@ void DrawScreen(void)
                 {
                     MacUILib_printf(" ");
                 }
-            }
+            
+           }
         }
         cout << "\n";
     }
