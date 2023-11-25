@@ -1,7 +1,11 @@
 #include "GameMechs.h"
+#include <time.h>
 
 GameMechs::GameMechs()
 {
+    boardSizeX = 30;
+    boardSizeY = 18;
+    exitFlag = false;
 
 }
 
@@ -10,8 +14,6 @@ GameMechs::GameMechs(int boardX, int boardY)
     boardSizeX = boardX;
     boardSizeY = boardY;
     exitFlag = false;
-
-
 }
 
 // do you need a destructor?
@@ -53,4 +55,27 @@ void GameMechs::setInput(char this_input)
 void GameMechs::clearInput()
 {
     input = 0;
+}
+
+
+
+void GameMechs::generateFood(objPos blockOff) {
+    unsigned int seed = (unsigned int)time(NULL) + (unsigned int)clock();
+    srand(seed);
+
+    char symbol = 'n';
+    int rand_x, rand_y;
+    objPos tempPos;
+    do {
+        rand_x = (rand() % (boardSizeX - 1)) + 1;
+        rand_y = (rand() % (boardSizeY - 1)) + 1;
+        tempPos.setObjPos(rand_x, rand_y, symbol);
+        
+    } while (blockOff.isPosEqual(&tempPos) == 1);
+    foodPos.setObjPos(rand_x, rand_y, symbol);
+}
+
+void GameMechs::getFoodPos(objPos &returnPos){
+    returnPos.setObjPos(foodPos.x, foodPos.y, foodPos.symbol);
+
 }

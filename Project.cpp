@@ -45,6 +45,9 @@ void Initialize(void)
 {
     GameMechsp = new GameMechs(15, 30);
     player = new Player(GameMechsp);
+    objPos pos;
+    player->getPlayerPos(pos);
+    GameMechsp->generateFood(pos);
 
     MacUILib_init();
     MacUILib_clearScreen();
@@ -100,6 +103,9 @@ void DrawScreen(void)
     objPos pos;
     player->getPlayerPos(pos);
 
+    objPos food;
+    GameMechsp->getFoodPos(food);
+
     for (int i = 0; i < GameMechsp->getBoardSizeX(); i++)
     {
         for (int j = 0; j < GameMechsp->getBoardSizeY(); j++)
@@ -109,6 +115,9 @@ void DrawScreen(void)
             }
             else if(i == pos.x && j == pos.y){
                 MacUILib_printf("*");
+            }
+            else if (i == food.x && j == food.y){
+                MacUILib_printf("n");
             }
             else{
                 MacUILib_printf(" ");
