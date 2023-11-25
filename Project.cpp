@@ -20,7 +20,6 @@ void LoopDelay(void);
 void CleanUp(void);
 
 GameMechs* GameMechsp;
-
 Player* player;
 
 
@@ -156,7 +155,5 @@ void LoopDelay(void)
 void CleanUp(void)
 {
     MacUILib_clearScreen();  
-    delete GameMechsp;  
-  
     MacUILib_uninit();
 }

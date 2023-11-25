@@ -10,15 +10,6 @@ Player::Player(GameMechs* thisGMRef)
     // more actions to be included
     playerPos = objPos(mainGameMechsRef->getBoardSizeX()/2, mainGameMechsRef->getBoardSizeY()/2, '*');
     playerPosList.insertHead(playerPos);
-    playerPos = objPos(mainGameMechsRef->getBoardSizeX()/2 + 1, mainGameMechsRef->getBoardSizeY()/2, '*');
-    playerPosList.insertHead(playerPos);
-    playerPos = objPos(mainGameMechsRef->getBoardSizeX()/2 + 2, mainGameMechsRef->getBoardSizeY()/2, '*');
-    playerPosList.insertHead(playerPos);
-    playerPos = objPos(mainGameMechsRef->getBoardSizeX()/2 + 3, mainGameMechsRef->getBoardSizeY()/2, '*');
-    playerPosList.insertHead(playerPos);
-    playerPos = objPos(mainGameMechsRef->getBoardSizeX()/2 + 4, mainGameMechsRef->getBoardSizeY()/2, '*');
-    playerPosList.insertHead(playerPos);
-
 }
 
 
