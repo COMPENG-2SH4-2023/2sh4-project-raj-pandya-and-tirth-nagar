@@ -21,6 +21,7 @@ class Player
 
         void getPlayerPos(objPos &returnPos); // Upgrade this in iteration 3.
         void getPlayerPosList(objPosArrayList &returnPos); // Upgrade this in iteration 3.
+        int getPlayerDir();
         void updatePlayerDir();
         void movePlayer();
 

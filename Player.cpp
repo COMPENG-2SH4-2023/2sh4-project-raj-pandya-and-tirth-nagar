@@ -21,6 +21,12 @@ Player::~Player()
     delete mainGameMechsRef;
 }
 
+int Player::getPlayerDir()
+{
+    // return the reference to the playerPos arrray list
+    return myDir;
+}
+
 void Player::getPlayerPos(objPos &returnPos)
 {
     // return the reference to the playerPos arrray list
