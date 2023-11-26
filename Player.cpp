@@ -2,6 +2,8 @@
 #include "objPos.h"
 #include "objPosArrayList.h"
 
+#include <iostream>
+
 Player::Player(GameMechs* thisGMRef)
 {
     mainGameMechsRef = thisGMRef;
@@ -101,28 +103,39 @@ void Player::movePlayer()
 {
     // PPA3 Finite State Machine logic
 
+    objPos food;
+    mainGameMechsRef->getFoodPos(food);
+
+    bool intersect = false;
+
+    
+    objPos headpos;
+    playerPosList.getHeadElement(headpos);
+        
+
+    objPos tailpos;
+    playerPosList.getTailElement(tailpos);
+
+
     if (myDir != STOP){
+
         switch (myDir)
         {
             case UP:
                 playerPos.x--;
                 playerPosList.insertHead(playerPos);
-                playerPosList.removeTail();
                 break;
             case DOWN:
                 playerPos.x++;
                 playerPosList.insertHead(playerPos);
-                playerPosList.removeTail();
                 break;
             case LEFT:
                 playerPos.y--;
                 playerPosList.insertHead(playerPos);
-                playerPosList.removeTail();
                 break;
             case RIGHT:
                 playerPos.y++;
                 playerPosList.insertHead(playerPos);
-                playerPosList.removeTail();
                 break;
         }
 
@@ -155,6 +168,19 @@ void Player::movePlayer()
             playerPos.y = 1;
             playerPosList.insertHead(playerPos);
             playerPosList.removeTail();
+        }
+
+        playerPosList.getHeadElement(headpos);
+
+        if (headpos.isPosEqual(&food)){
+            intersect = true;
+        }
+        if (intersect == false){
+            playerPosList.removeTail();
+        }
+        else {
+            intersect = false;
+            mainGameMechsRef->generateFood(headpos);
         }
     }
 }

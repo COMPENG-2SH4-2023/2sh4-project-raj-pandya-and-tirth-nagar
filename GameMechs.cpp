@@ -1,6 +1,9 @@
 #include "GameMechs.h"
 #include <time.h>
 #include "MacUILib.h"
+#include "objPosArrayList.h"
+#include "player.h"
+
 
 GameMechs::GameMechs()
 {
@@ -74,8 +77,8 @@ void GameMechs::generateFood(objPos blockOff) {
     int rand_x, rand_y;
     objPos tempPos;
     do {
-        rand_x = (rand() % (boardSizeX - 1)) + 1;
-        rand_y = (rand() % (boardSizeY - 1)) + 1;
+        rand_x = (rand() % (boardSizeX - 2)) + 1;
+        rand_y = (rand() % (boardSizeY - 2)) + 1;
         tempPos.setObjPos(rand_x, rand_y, symbol);
         
     } while (blockOff.isPosEqual(&tempPos) == 1);
