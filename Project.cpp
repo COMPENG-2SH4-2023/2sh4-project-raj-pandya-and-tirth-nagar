@@ -8,10 +8,6 @@
 
 using namespace std;
 
-#define DELAY_CONST 100000
-
-bool exitFlag;
-
 void Initialize(void);
 void GetInput(void);
 void RunLogic(void);
@@ -28,7 +24,7 @@ int main(void)
 
     Initialize();
 
-    while((*GameMechsp).getExitFlagStatus() == false)  
+    while(GameMechsp->getExitFlagStatus() == false)  
     {
         GetInput();
         RunLogic();
@@ -123,7 +119,7 @@ void DrawScreen(void)
     }
 
     cout << "============ Debug info ============" << endl;
-    cout << "Score: " << playerPosList.getSize() - 1<< endl;
+    cout << "Score: " << GameMechsp->getScore()<< endl;
 
     cout << "Board Size: " << GameMechsp->getBoardSizeY() << " x " << GameMechsp->getBoardSizeX() << endl;
     
@@ -147,16 +143,22 @@ void DrawScreen(void)
 
     MacUILib_printf("\nPlayer Position: (%d, %d)", head.y, head.x);
 
+
 }
 
 void LoopDelay(void)
 {
-    MacUILib_Delay(DELAY_CONST); // 0.1s delay
+    MacUILib_Delay(100000); // 0.1s delay
 }
 
 
 void CleanUp(void)
 {
     MacUILib_clearScreen();  
+    if (GameMechsp->getLoseFlagStatus() == true){
+        cout << "You Lose. You Scored: " << GameMechsp->getScore() << endl;
+
+    }
+
     MacUILib_uninit();
 }

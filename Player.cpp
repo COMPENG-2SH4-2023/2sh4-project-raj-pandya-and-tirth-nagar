@@ -187,6 +187,27 @@ void Player::movePlayer()
         else {
             intersect = false;
             mainGameMechsRef->generateFood(playerPosList);
+            mainGameMechsRef->incrementScore();
         }
     }
+
+    if (checkSelfCollision() == true){
+        mainGameMechsRef->setExitTrue();
+        mainGameMechsRef->setLoseFlag();
+    }
 }
+
+bool Player::checkSelfCollision(){
+    objPos headpos;
+    playerPosList.getHeadElement(headpos);
+
+    for (int i = 1; i<playerPosList.getSize(); i++){
+        objPos block;
+        playerPosList.getElement(block, i);
+        if (headpos.isPosEqual(&block) == 1){
+            return true;
+        }
+    }
+    return false;
+}
+

@@ -24,6 +24,7 @@ class Player
         int getPlayerDir();
         void updatePlayerDir();
         void movePlayer();
+        bool checkSelfCollision();
 
     private:
         objPos playerPos;   // Upgrade this in iteration 3.
