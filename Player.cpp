@@ -186,7 +186,7 @@ void Player::movePlayer()
         }
         else {
             intersect = false;
-            mainGameMechsRef->generateFood(headpos);
+            mainGameMechsRef->generateFood(playerPosList);
         }
     }
 }

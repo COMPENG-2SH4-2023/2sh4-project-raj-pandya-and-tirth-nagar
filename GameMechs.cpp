@@ -69,19 +69,31 @@ void GameMechs::clearInput()
 
 
 
-void GameMechs::generateFood(objPos blockOff) {
+void GameMechs::generateFood(objPosArrayList &blocksOff) {
     unsigned int seed = (unsigned int)time(NULL) + (unsigned int)clock();
     srand(seed);
 
     char symbol = 'n';
     int rand_x, rand_y;
     objPos tempPos;
-    do {
+    while (1) {
+        bool found = false;
         rand_x = (rand() % (boardSizeX - 2)) + 1;
         rand_y = (rand() % (boardSizeY - 2)) + 1;
         tempPos.setObjPos(rand_x, rand_y, symbol);
+        for (int i = 0; i<blocksOff.getSize(); i++){
+            objPos blockOff;
+            blocksOff.getElement(blockOff, i);
+            if (blockOff.isPosEqual(&tempPos) == 1){
+                found = true;
+            }
+        }
+        if (found == false){
+            break;
+        }
         
-    } while (blockOff.isPosEqual(&tempPos) == 1);
+    } 
+    // while (blockOff.isPosEqual(&tempPos) == 1);
     foodPos.setObjPos(rand_x, rand_y, symbol);
 }
 

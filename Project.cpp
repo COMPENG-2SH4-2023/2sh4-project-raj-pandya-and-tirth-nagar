@@ -45,15 +45,14 @@ void Initialize(void)
 {
     GameMechsp = new GameMechs(15, 30);
     player = new Player(GameMechsp);
+
     objPos pos;
-
     player->getPlayerPos(pos);
-    objPosArrayList playerPosList;
-    objPos headpos;
 
+    objPosArrayList playerPosList;
     player->getPlayerPosList(playerPosList);
 
-    GameMechsp->generateFood(pos);
+    GameMechsp->generateFood(playerPosList);
 
     MacUILib_init();
     MacUILib_clearScreen();
@@ -124,6 +123,8 @@ void DrawScreen(void)
     }
 
     cout << "============ Debug info ============" << endl;
+    cout << "Score: " << playerPosList.getSize() - 1<< endl;
+
     cout << "Board Size: " << GameMechsp->getBoardSizeY() << " x " << GameMechsp->getBoardSizeX() << endl;
     
     switch(player->getPlayerDir()){
