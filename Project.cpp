@@ -5,9 +5,9 @@
 #include "GameMechs.h"
 #include "objPosArrayList.h"
 
-
 using namespace std;
 
+// Function prototypes
 void Initialize(void);
 void GetInput(void);
 void RunLogic(void);
@@ -15,15 +15,15 @@ void DrawScreen(void);
 void LoopDelay(void);
 void CleanUp(void);
 
+// Pointers to GameMechs and Player objects
 GameMechs* GameMechsp;
 Player* player;
 
-
 int main(void)
 {
-
     Initialize();
 
+    // Main game loop
     while(GameMechsp->getExitFlagStatus() == false)  
     {
         GetInput();
@@ -33,62 +33,69 @@ int main(void)
     }
 
     CleanUp();
-
 }
 
-
+// Initialize the game components
 void Initialize(void)
 {
+    // Create instances of GameMechs and Player
     GameMechsp = new GameMechs(15, 30);
     player = new Player(GameMechsp);
 
+    // Get initial player position and create a list to track player positions
     objPos pos;
     player->getPlayerPos(pos);
-
     objPosArrayList playerPosList;
     player->getPlayerPosList(playerPosList);
 
+    // Generate initial food position
     GameMechsp->generateFood(playerPosList);
 
+    // Initialize MacUILib and clear the screen
     MacUILib_init();
     MacUILib_clearScreen();
 }
 
+// Get user input
 void GetInput(void)
 {
     char input = GameMechsp->getInput();
     GameMechsp->setInput(input);
 }
 
+// Run game logic (update player direction and move player)
 void RunLogic(void)
 {
     player->updatePlayerDir();
     player->movePlayer();
-
 }
 
+// Draw the game screen
 void DrawScreen(void)
 {
     MacUILib_clearScreen();
 
+    // Get player head position and player position list
     objPos head;
     player->getPlayerPos(head);
-
     objPosArrayList playerPosList;
     player->getPlayerPosList(playerPosList);
 
+    // Get food position
     objPos food;
     GameMechsp->getFoodPos(food);
 
+    // Loop through each position on the game board and print characters
     for (int i = 0; i < GameMechsp->getBoardSizeX(); i++){
         for (int j = 0; j < GameMechsp->getBoardSizeY(); j++)
         {
             if(i == 0 || i == GameMechsp->getBoardSizeX() - 1 || j == 0 || j == GameMechsp->getBoardSizeY() - 1){
-                MacUILib_printf("#");
+                MacUILib_printf("#"); // Draw the border
             }
             else
             {
                 bool printPlayer = false;
+
                 // Check if the current position is in the player's position list
                 for (int k = 0; k < playerPosList.getSize(); k++)
                 {
@@ -103,26 +110,26 @@ void DrawScreen(void)
 
                 if (printPlayer)
                 {
-                    MacUILib_printf("*");
+                    MacUILib_printf("*"); // Draw the player
                 }
                 else if (i == food.x && j == food.y){
-                    MacUILib_printf("n");
+                    MacUILib_printf("n"); // Draw the food
                 }
                 else
                 {
-                    MacUILib_printf(" ");
+                    MacUILib_printf(" "); // Draw an empty space
                 }
-            
-           }
+            }
         }
         cout << "\n";
     }
 
+    // Display debug information
     cout << "============ Debug info ============" << endl;
     cout << "Score: " << GameMechsp->getScore()<< endl;
-
     cout << "Board Size: " << GameMechsp->getBoardSizeY() << " x " << GameMechsp->getBoardSizeX() << endl;
-    
+
+    // Display player direction
     switch(player->getPlayerDir()){
         case 0:
             MacUILib_printf("Player Direction: Up");
@@ -141,24 +148,28 @@ void DrawScreen(void)
             break;
     }
 
+    // Display player head position
     MacUILib_printf("\nPlayer Position: (%d, %d)", head.y, head.x);
-
-
 }
 
+
+
+// Introduce a delay in the game loop
 void LoopDelay(void)
 {
     MacUILib_Delay(100000); // 0.1s delay
 }
 
-
+// Clean up resources and display game over message
 void CleanUp(void)
 {
     MacUILib_clearScreen();  
+
+    // Display game over message with the final score
     if (GameMechsp->getLoseFlagStatus() == true){
         cout << "You Lose. You Scored: " << GameMechsp->getScore() << endl;
-
     }
 
+    // Uninitialize MacUILib
     MacUILib_uninit();
 }

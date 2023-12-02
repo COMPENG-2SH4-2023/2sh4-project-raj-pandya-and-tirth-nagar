@@ -4,39 +4,43 @@
 
 #include <iostream>
 
+// Constructor for the Player class
 Player::Player(GameMechs* thisGMRef)
 {
+    // Initialize member variables
     mainGameMechsRef = thisGMRef;
     myDir = STOP;
 
-    // more actions to be included
-    playerPos = objPos(mainGameMechsRef->getBoardSizeX()/2, mainGameMechsRef->getBoardSizeY()/2, '*');
+    // Set the initial position of the player in the middle of the game board
+    playerPos = objPos(mainGameMechsRef->getBoardSizeX() / 2, mainGameMechsRef->getBoardSizeY() / 2, '*');
+    
+    // Insert the initial position into the player's position list
     playerPosList.insertHead(playerPos);
 }
 
-
+// Destructor for the Player class
 Player::~Player()
 {
-    // delete any heap members here
+    // Delete any dynamically allocated memory
     delete mainGameMechsRef;
 }
 
+// Get the current direction of the player
 int Player::getPlayerDir()
 {
-    // return the reference to the playerPos arrray list
     return myDir;
 }
 
+// Get the current position of the player
 void Player::getPlayerPos(objPos &returnPos)
 {
-    // return the reference to the playerPos arrray list
     playerPosList.getHeadElement(returnPos);
 }
 
+// Get the list of positions representing the player's body
 void Player::getPlayerPosList(objPosArrayList &returnPos)
 {
-    // return the reference to the playerPos arrray list
-    size_t size = playerPosList.getSize();
+    int size = playerPosList.getSize();
     for (int i = 0; i < size; i++)
     {
         objPos pos;
@@ -45,16 +49,17 @@ void Player::getPlayerPosList(objPosArrayList &returnPos)
     }
 }
 
+// Update the direction of the player based on user input
 void Player::updatePlayerDir()
 {
-    // PPA3 input processing logic
     char input = mainGameMechsRef->getInput();
     
     if(input != 0)  
     {
+        // Process input to set the direction or exit the game
         switch(input)
         {
-            case 27:
+            case 27: // ASCII code for the ESC key
                 mainGameMechsRef->setExitTrue();
                 break;
             case 'w':
@@ -74,10 +79,9 @@ void Player::updatePlayerDir()
                 mainGameMechsRef->setInput('d');
                 break;
         }
-        
     }
 
-    // Update the direction state
+    // Update the internal direction state based on user input
     if(input != 0){
         switch(input){                      
             case 'w':
@@ -105,26 +109,26 @@ void Player::updatePlayerDir()
     mainGameMechsRef->clearInput();
 }
 
+// Move the player on the game board
 void Player::movePlayer()
 {
-    // PPA3 Finite State Machine logic
-
+    // Get the position of the food on the game board
     objPos food;
     mainGameMechsRef->getFoodPos(food);
 
+    // Variable to check if the player intersects with the food
     bool intersect = false;
 
-    
+    // Get the current head and tail positions of the player's body
     objPos headpos;
     playerPosList.getHeadElement(headpos);
-        
-
+    
     objPos tailpos;
     playerPosList.getTailElement(tailpos);
 
-
+    // Check if the player is moving (not in STOP state)
     if (myDir != STOP){
-
+        // Update player's position based on the current direction
         switch (myDir)
         {
             case UP:
@@ -145,6 +149,7 @@ void Player::movePlayer()
                 break;
         }
 
+        // Check if the player has hit the game board boundaries
         int height = mainGameMechsRef->getBoardSizeY();
         int width = mainGameMechsRef->getBoardSizeX();
 
@@ -176,27 +181,33 @@ void Player::movePlayer()
             playerPosList.removeTail();
         }
 
+        // Get the new head position
         playerPosList.getHeadElement(headpos);
 
+        // Check if the head position is the same as the food position
         if (headpos.isPosEqual(&food)){
             intersect = true;
         }
         if (intersect == false){
+            // If no intersection with food, remove the tail (move forward)
             playerPosList.removeTail();
         }
         else {
+            // If intersection with food, generate new food, and increment score
             intersect = false;
             mainGameMechsRef->generateFood(playerPosList);
             mainGameMechsRef->incrementScore();
         }
     }
 
+    // Check for self-collision
     if (checkSelfCollision() == true){
         mainGameMechsRef->setExitTrue();
         mainGameMechsRef->setLoseFlag();
     }
 }
 
+// Check for self-collision of the player's body
 bool Player::checkSelfCollision(){
     objPos headpos;
     playerPosList.getHeadElement(headpos);
@@ -210,4 +221,3 @@ bool Player::checkSelfCollision(){
     }
     return false;
 }
-
