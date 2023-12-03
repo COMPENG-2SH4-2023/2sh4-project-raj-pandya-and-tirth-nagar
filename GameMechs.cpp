@@ -102,14 +102,14 @@ void GameMechs::generateFood(objPosArrayList &blocksOff) {
     srand(seed);
 
     // Symbol for the food
-    char symbol = 'n';
+    char symbol = 'O';
     int rand_x, rand_y;
     objPos tempPos;
 
     // Keep generating random positions until a valid position is found
-    while (1) {
-        bool found = false;
-
+    bool found = true;
+    while (found == true) {
+        found = false;
         // Generate random coordinates within the game board boundaries
         rand_x = (rand() % (boardSizeX - 2)) + 1;
         rand_y = (rand() % (boardSizeY - 2)) + 1;
@@ -122,11 +122,6 @@ void GameMechs::generateFood(objPosArrayList &blocksOff) {
             if (blockOff.isPosEqual(&tempPos) == 1){
                 found = true;
             }
-        }
-
-        // Break the loop if a valid position is found
-        if (found == false){
-            break;
         }
     }
 

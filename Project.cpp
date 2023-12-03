@@ -113,7 +113,7 @@ void DrawScreen(void)
                     MacUILib_printf("*"); // Draw the player
                 }
                 else if (i == food.x && j == food.y){
-                    MacUILib_printf("n"); // Draw the food
+                    MacUILib_printf("%c", food.symbol); // Draw the food
                 }
                 else
                 {
@@ -121,15 +121,11 @@ void DrawScreen(void)
                 }
             }
         }
-        cout << "\n";
+        MacUILib_printf("\n");
     }
 
     // Display debug information
-    cout << "============ Debug info ============" << endl;
-    cout << "Score: " << GameMechsp->getScore()<< endl;
-    cout << "Board Size: " << GameMechsp->getBoardSizeY() << " x " << GameMechsp->getBoardSizeX() << endl;
-
-    // Display player direction
+    MacUILib_printf("============ Debug info ============\nScore: %d\nBoard Size: %d x %d\n", GameMechsp->getScore(), GameMechsp->getBoardSizeY(), GameMechsp->getBoardSizeX());
     switch(player->getPlayerDir()){
         case 0:
             MacUILib_printf("Player Direction: Up");
@@ -167,9 +163,7 @@ void CleanUp(void)
 
     // Display game over message with the final score
     if (GameMechsp->getLoseFlagStatus() == true){
-        cout << "You Lose. You Scored: " << GameMechsp->getScore() << endl;
+        MacUILib_printf("You Lose. You Scored: %d", GameMechsp->getScore());
     }
-
-    // Uninitialize MacUILib
     MacUILib_uninit();
 }
